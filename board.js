@@ -26,18 +26,23 @@ document.getElementById('post-form').addEventListener('submit', async (e) => {
     return;
   }
 
-  const fileRef = storage.ref().child('uploads/' + Date.now() + '_' + file.name);
-  await fileRef.put(file);
-  const fileURL = await fileRef.getDownloadURL();
+  try {
+    const fileRef = storage.ref().child('uploads/' + Date.now() + '_' + file.name);
+    await fileRef.put(file);
+    const fileURL = await fileRef.getDownloadURL();
 
-  await db.collection('posts').add({
-    writer,
-    title,
-    content,
-    fileURL,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
+    await db.collection('posts').add({
+      writer,
+      title,
+      content,
+      fileURL,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
 
-  status.textContent = '게시글이 성공적으로 업로드되었습니다!';
-  document.getElementById('post-form').reset();
+    status.textContent = '게시글이 성공적으로 업로드되었습니다!';
+    document.getElementById('post-form').reset();
+  } catch (err) {
+    console.error('업로드 실패:', err);
+    status.textContent = '업로드 중 오류가 발생했습니다.';
+  }
 });
