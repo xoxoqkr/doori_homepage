@@ -1,8 +1,4 @@
 {
   "version": 2,
-  "public": true,
-  "routes": [
-    { "src": "/board.html", "dest": "/board.html" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  "public": true
 }
