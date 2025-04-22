@@ -1,6 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// ✅ 테스트용 Supabase 프로젝트 연결
 const supabaseUrl = 'https://qiyqnkgwejksykqkxqwm.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpeXFuZ2d3ZWpra3lrcXhxd20iLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcxMzcxMzg4NSwiZXhwIjoxNzQ1Mjc5ODg1fQ.cEnO3bEF9AcAO4gzHeVt9TrmJHgW00-Eevb9ZfbDEOY'
 const supabase = createClient(supabaseUrl, supabaseKey)
