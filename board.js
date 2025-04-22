@@ -2,14 +2,13 @@ const firebaseConfig = {
   apiKey: "AIzaSyC2Cq3tKms5XRuYcdFBbRHmvMt1JBcu4EE",
   authDomain: "testtj-4ba34.firebaseapp.com",
   projectId: "testtj-4ba34",
-  storageBucket: "testtj-4ba34.appspot.com",  // ← 정확히 이걸로 수정!
+  storageBucket: "testtj-4ba34.appspot.com",
   messagingSenderId: "10381310067",
   appId: "1:10381310067:web:3f1d7797cb106a55325206",
   measurementId: "G-7YP2BBXC9X"
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.firestore();
 const storage = firebase.storage();
 
