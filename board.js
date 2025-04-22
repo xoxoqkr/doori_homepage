@@ -1,42 +1,44 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+// 🔧 여기에 본인 Firebase 프로젝트 설정 정보 입력
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID"
+};
 
-const supabaseUrl = 'https://qiyqnkgwejksykqkxqwm.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpeXFuZ2d3ZWpra3lrcXhxd20iLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcxMzcxMzg4NSwiZXhwIjoxNzQ1Mjc5ODg1fQ.cEnO3bEF9AcAO4gzHeVt9TrmJHgW00-Eevb9ZfbDEOY'
-const supabase = createClient(supabaseUrl, supabaseKey)
+firebase.initializeApp(firebaseConfig);
 
-const form = document.getElementById('post-form')
-const status = document.getElementById('status')
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault()
-  status.textContent = '업로드 중...'
+document.getElementById('post-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-  const writer = document.getElementById('writer').value
-  const title = document.getElementById('title').value
-  const content = document.getElementById('content').value
-  const file = document.getElementById('file').files[0]
+  const writer = document.getElementById('writer').value;
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  const file = document.getElementById('file').files[0];
+  const status = document.getElementById('status');
 
-  let file_url = null
-  if (file) {
-    const { data, error } = await supabase.storage
-      .from('uploads-public')
-      .upload(`posts/${Date.now()}_${file.name}`, file)
-
-    if (error) {
-      status.textContent = '파일 업로드 실패: ' + error.message
-      return
-    }
-    file_url = `${supabaseUrl}/storage/v1/object/public/uploads-public/${data.path}`
+  if (!file || file.type !== 'application/pdf') {
+    status.textContent = 'PDF 파일만 업로드할 수 있습니다.';
+    return;
   }
 
-  const { error: insertError } = await supabase
-    .from('posts')
-    .insert([{ writer, title, content, file_url }])
+  const fileRef = storage.ref().child('uploads/' + Date.now() + '_' + file.name);
+  await fileRef.put(file);
+  const fileURL = await fileRef.getDownloadURL();
 
-  if (insertError) {
-    status.textContent = '게시글 저장 실패: ' + insertError.message
-  } else {
-    status.textContent = '게시글이 성공적으로 등록되었습니다!'
-    form.reset()
-  }
-})
+  await db.collection('posts').add({
+    writer,
+    title,
+    content,
+    fileURL,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  status.textContent = '게시글이 성공적으로 업로드되었습니다!';
+  document.getElementById('post-form').reset();
+});
