@@ -1,11 +1,12 @@
-// 🔧 여기에 본인 Firebase 프로젝트 설정 정보 입력
+// Firebase SDK v9 - compat 방식 사용 (변경 없음)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
+  apiKey: "AIzaSyC2Cq3tKms5XRuYcdFBbRHmvMt1JBcu4EE",
+  authDomain: "testtj-4ba34.firebaseapp.com",
+  projectId: "testtj-4ba34",
+  storageBucket: "testtj-4ba34.appspot.com",
+  messagingSenderId: "10381310067",
+  appId: "1:10381310067:web:3f1d7797cb106a55325206",
+  measurementId: "G-7YP2BBXC9X"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -40,5 +41,4 @@ document.getElementById('post-form').addEventListener('submit', async (e) => {
   });
 
   status.textContent = '게시글이 성공적으로 업로드되었습니다!';
-  document.getElementById('post-form').reset();
-});
+  document.ge
